@@ -80,42 +80,45 @@ const Planner = () => {
     );
   };
 
-  const handleManualOutfitSave = async () => {
-    if (selectedItems.length < 2) {
-      Alert.alert('Incomplete Outfit', 'Please select at least 2 items for your outfit');
-      return;
-    }
+const handleManualOutfitSave = async () => {
+  if (selectedItems.length < 2) {
+    Alert.alert('Incomplete Outfit', 'Please select at least 2 items for your outfit');
+    return;
+  }
 
-    try {
-      const dateKey = selectedDate || new Date().toISOString().split('T')[0];
-      
-      const manualOutfitData = {
-        items: selectedItems,
-        plannedAt: new Date().toISOString(),
-        outfitNumber: 1, // Manual outfit
-        date: dateKey,
-        isManual: true
-      };
-      
-      // Save to planned outfits
-      let plannedOutfits = await AsyncStorage.getItem("@plannedOutfits");
-      plannedOutfits = JSON.parse(plannedOutfits) || {};
-      plannedOutfits[dateKey] = manualOutfitData;
-      
-      await AsyncStorage.setItem("@plannedOutfits", JSON.stringify(plannedOutfits));
-      
-      // Reset states
-      setSelectedItems([]);
-      setShowManualSelection(false);
-      setManualOutfitStep('tops');
-      
-      Alert.alert('Success!', `Outfit planned for ${new Date(dateKey).toLocaleDateString()}! 🎀`);
-      
-    } catch (error) {
-      console.error("Error saving manual outfit:", error);
-      Alert.alert('Error', 'Failed to save outfit');
-    }
-  };
+  try {
+    const dateKey = selectedDate || new Date().toISOString().split('T')[0];
+    
+    const manualOutfitData = {
+      items: selectedItems,
+      plannedAt: new Date().toISOString(),
+      outfitNumber: 1, // Manual outfit
+      date: dateKey,
+      isManual: true
+    };
+    
+    // Save to planned outfits
+    let plannedOutfits = await AsyncStorage.getItem("@plannedOutfits");
+    plannedOutfits = JSON.parse(plannedOutfits) || {};
+    plannedOutfits[dateKey] = manualOutfitData;
+    
+    await AsyncStorage.setItem("@plannedOutfits", JSON.stringify(plannedOutfits));
+    
+    // ✅ ADD THIS LINE - Update state immediately
+    setPlannedOutfitForDate(manualOutfitData);
+    
+    // Reset states
+    setSelectedItems([]);
+    setShowManualSelection(false);
+    setManualOutfitStep(dynamicCategories[0] || 'tops'); // Use dynamic categories
+    
+    Alert.alert('Success!', `Outfit planned for ${new Date(dateKey).toLocaleDateString()}! 🎀`);
+    
+  } catch (error) {
+    console.error("Error saving manual outfit:", error);
+    Alert.alert('Error', 'Failed to save outfit');
+  }
+};
 
   // Toggle item selection
   const toggleItemSelection = (item) => {

@@ -1,12 +1,77 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { useNavigation } from '@react-navigation/native';
-import { useEffect, useState } from 'react';
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useEffect, useState , useRef} from 'react';
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View, Animated, Dimensions } from 'react-native';
 import { Surface, TextInput } from 'react-native-paper';
 import { responsiveFontSize, responsiveHeight } from '../utility/responsive';
 
 const Permission = () => {
+//   const AnimatedDressCarousel = () => {
+//   const scrollY = useRef(new Animated.Value(0)).current;
+//   const [currentIndex, setCurrentIndex] = useState(0);
+
+//   const dressesData = [
+//     require('../../assets/images/dress1.png'),
+//     require('../../assets/images/dress1.png'),
+//     require('../../assets/images/dress1.png'),
+//     require('../../assets/images/dress1.png'),
+//     require('../../assets/images/dress1.png'),
+//   ];
+
+//   useEffect(() => {
+//     const interval = setInterval(() => {
+//       setCurrentIndex((prevIndex) => {
+//         const nextIndex = (prevIndex + 1) % dressesData.length;
+        
+//         Animated.timing(scrollY, {
+//           toValue: nextIndex * 170, // item height + margin
+//           duration: 1000,
+//           useNativeDriver: true,
+//         }).start();
+        
+//         return nextIndex;
+//       });
+//     }, 2500);
+
+//     return () => clearInterval(interval);
+//   }, []);
+
+//   return (
+//     <View style={{
+//       position: 'absolute',
+//       right: 20,
+//       top: Dimensions.get('window').height * 0.15,
+//       height: Dimensions.get('window').height * 0.4,
+//       width: 100,
+//       overflow: 'hidden',
+//     }}>
+//       <Animated.View style={{
+//         transform: [{ translateY: Animated.multiply(scrollY, -1) }]
+//       }}>
+//         {dressesData.map((dress, index) => (
+//           <View key={index} style={{
+//             height: 150,
+//             width: 100,
+//             marginVertical: 10,
+//             alignItems: 'center',
+//             justifyContent: 'center',
+//           }}>
+//             <Image 
+//               source={dress} 
+//               style={{
+//                 width: 80,
+//                 height: 120,
+//                 borderRadius: 10,
+//               }}
+//               resizeMode="cover"
+//             />
+//           </View>
+//         ))}
+//       </Animated.View>
+//     </View>
+//   );
+// };
   const moodOptions = [
     { emoji: "😊", label: "Happy" },
     { emoji: "🤩", label: "Excited" },
@@ -148,6 +213,8 @@ const Permission = () => {
   return (
     <View style={{backgroundColor: '#f9d3d9', flex: 1}}>
       <Text style={styles.title}>Let's know you 🌸</Text>
+
+         {/* <AnimatedDressCarousel /> */}
       
       <ScrollView 
         style={styles.container} 
@@ -354,18 +421,18 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
     width: '100%',
-    marginTop: responsiveHeight(2),
-    borderTopRightRadius: 130,
-    borderTopLeftRadius: 130,
+    marginTop: responsiveHeight(0),
+    borderTopRightRadius: 190,
+    borderTopLeftRadius: 190,
     flex: 1, // Important for proper scroll
     zIndex: 10
   },
   title: {
     fontSize: responsiveFontSize(28),
     color: '#d36491',
-    marginBottom: responsiveHeight(6),
+    marginBottom: responsiveHeight(4),
     fontFamily: 'Raleway-Bold',
-    marginTop: responsiveHeight(10),
+    marginTop: responsiveHeight(4),
     alignSelf: 'center'
   },
   profile: {

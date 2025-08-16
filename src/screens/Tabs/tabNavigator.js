@@ -61,7 +61,7 @@ export default function TabNavigator() {
           options={{
             title: 'Wardrobe',
             tabBarIcon: ({ color }) => (
-              <FontAwesome5 name="calendar-alt" size={24} color={color} />
+              <FontAwesome5 name='door-open' size={24} color={color} />
             ),
           }}
         />

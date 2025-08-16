@@ -1,9 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
-import SkeletonContent from 'react-native-skeleton-content';
+// import SkeletonContent from 'react-native-skeleton-content';
 import { useEffect, useState } from 'react';
-import { Image, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Image, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Surface } from 'react-native-paper';
 import { responsiveHeight } from '../utility/responsive';
 
@@ -187,52 +187,53 @@ export default function TabTwoScreen() {
       </View>
 
       <Text style={{ fontSize: 12, fontWeight: '400', marginVertical: 10, fontFamily: 'Raleway-Regular', paddingHorizontal: 10, justifyContent: 'center' }}>Your wardrobe is ready to be organized. Long press on an item to move it to a different category or remove it.</Text>
-{true && (
-  <ScrollView style={{ padding: 10 }}>
-    {[1, 2, 3].map((_, index) => (
-      <Surface
-        key={index}
-        elevation={1}
-        style={{
-          marginVertical: 10,
-          borderRadius: 10,
-          backgroundColor: '#fff',
-          padding: 15,
-        }}
-      >
-        <SkeletonContent
-          containerStyle={{ flex: 1 }}
-          isLoading={true}
-          layout={[
-            { key: 'title' + index, width: 100, height: 20, marginBottom: 25 },
-            { key: 'count' + index, width: 40, height: 20, marginBottom: 15 },
-            ...[1, 2, 3].map((__, imgIndex) => ({
-              key: `img${index}-${imgIndex}`,
-              width: 120,
-              height: 120,
-              marginRight: 10,
-            })),
-          ]}
-          boneColor="#e0e0e0"
-          highlightColor="#f4f4f4"
-        >
-          <View>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-              <View style={{ width: 100, height: 20, borderRadius: 10 }} />
-              <View style={{ width: 40, height: 20, borderRadius: 10 }} />
-            </View>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 25 }}>
-              {[1, 2, 3].map((__, imgIndex) => (
-                <View key={imgIndex} style={{ marginRight: 10 }}>
-                  <View style={{ width: 120, height: 120, borderRadius: 10 }} />
-                </View>
-              ))}
-            </ScrollView>
-          </View>
-        </SkeletonContent>
-      </Surface>
-    ))}
-  </ScrollView>
+{loading && (
+  <ActivityIndicator size="large" color="#d36491"  style={{marginTop: 20}}/>
+  // <ScrollView style={{ padding: 10 }}>
+  //   {[1, 2, 3].map((_, index) => (
+  //     <Surface
+  //       key={index}
+  //       elevation={1}
+  //       style={{
+  //         marginVertical: 10,
+  //         borderRadius: 10,
+  //         backgroundColor: '#fff',
+  //         padding: 15,
+  //       }}
+  //     >
+  //       <SkeletonContent
+  //         containerStyle={{ flex: 1 }}
+  //         isLoading={true}
+  //         layout={[
+  //           { key: 'title' + index, width: 100, height: 20, marginBottom: 25 },
+  //           { key: 'count' + index, width: 40, height: 20, marginBottom: 15 },
+  //           ...[1, 2, 3].map((__, imgIndex) => ({
+  //             key: `img${index}-${imgIndex}`,
+  //             width: 120,
+  //             height: 120,
+  //             marginRight: 10,
+  //           })),
+  //         ]}
+  //         boneColor="#e0e0e0"
+  //         highlightColor="#f4f4f4"
+  //       >
+  //         <View>
+  //           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+  //             <View style={{ width: 100, height: 20, borderRadius: 10 }} />
+  //             <View style={{ width: 40, height: 20, borderRadius: 10 }} />
+  //           </View>
+  //           <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 25 }}>
+  //             {[1, 2, 3].map((__, imgIndex) => (
+  //               <View key={imgIndex} style={{ marginRight: 10 }}>
+  //                 <View style={{ width: 120, height: 120, borderRadius: 10 }} />
+  //               </View>
+  //             ))}
+  //           </ScrollView>
+  //         </View>
+  //       </SkeletonContent>
+  //     </Surface>
+  //   ))}
+  // </ScrollView>
 )}
 
 

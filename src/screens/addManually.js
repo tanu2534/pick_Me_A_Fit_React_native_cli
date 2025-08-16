@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { launchImageLibrary } from 'react-native-image-picker';
 import { useNavigation } from "@react-navigation/native"
-import { MotiView } from "moti"
+// import { Animated } from "react-native"
 import { useEffect, useRef, useState } from "react"
 import {
   ActivityIndicator,
@@ -268,7 +268,7 @@ const analyzeImage = async (imageUri) => {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={goBack} style={styles.backButton}>
-          <Image source={require('../../assets/images/back.png')} style={{ height: 30, width: 30, marginVertical: 10 }} />
+          <Image source={require('../../assets/images/back.png')} style={{ height: 30, width: 30, marginVertical: 10 , backgroundColor: 'transparent'}} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>
           {status === "idle" ? "Add Manually" : 
@@ -431,20 +431,47 @@ const analyzeImage = async (imageUri) => {
               {/* Recently Added Items */}
               {addedItems.length > 0 && (
                 <View style={styles.recentlyAddedContainer}>
-                  <Text style={styles.recentlyAddedTitle}>Recently Added</Text>
+                  {/* <Text style={styles.recentlyAddedTitle}>Recently Added</Text> */}
                   <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                    {addedItems.slice(-5).map((item, index) => (
-                      <MotiView
-                        key={item.id}
-                        from={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ type: "timing", duration: 300, delay: index * 100 }}
-                        style={styles.recentItemContainer}
-                      >
-                        <Image source={{ uri: item.uri }} style={styles.recentItemImage} />
-                        <Text style={styles.recentItemName} numberOfLines={1}>{item.label}</Text>
-                      </MotiView>
-                    ))}
+                    {addedItems.length > 0 && (
+  <View style={styles.recentlyAddedContainer}>
+    <Text style={styles.recentlyAddedTitle}>Recently Added</Text>
+    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+      {addedItems.slice(-5).map((item, index) => {
+        const animatedValue = new Animated.Value(0);
+        
+        // Start animation when component mounts
+        Animated.timing(animatedValue, {
+          toValue: 1,
+          duration: 300,
+          delay: index * 100,
+          useNativeDriver: true,
+        }).start();
+
+        return (
+          <Animated.View
+            key={item.id}
+            style={[
+              styles.recentItemContainer,
+              {
+                opacity: animatedValue,
+                transform: [{
+                  scale: animatedValue.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [0.8, 1],
+                  })
+                }]
+              }
+            ]}
+          >
+            <Image source={{ uri: item.uri }} style={styles.recentItemImage} />
+            <Text style={styles.recentItemName} numberOfLines={1}>{item.label}</Text>
+          </Animated.View>
+        );
+      })}
+    </ScrollView>
+  </View>
+)}
                   </ScrollView>
                 </View>
               )}
@@ -477,7 +504,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: "#EEEEEE",
-    marginTop: 30,
+    marginTop: 10,
   },
   backButton: {
     alignItems: "center",
@@ -749,6 +776,7 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 8,
     marginBottom: 4,
+    backgroundColor: "#F5F5F5",
   },
   recentItemName: {
     fontSize: 12,

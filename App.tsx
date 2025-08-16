@@ -19,6 +19,7 @@ function App() {
         barStyle="dark-content" 
         backgroundColor="#ffffff" 
         translucent={false}
+        
       />
       <Provider store={store}>
         <AppNavigator />

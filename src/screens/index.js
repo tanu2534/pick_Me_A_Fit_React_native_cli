@@ -29,7 +29,7 @@ export default function HomeScreen() {
   const [recommendation, setRecommendations] = useState(null);
   const [recommendationMessage, setRecommendationMessage] = useState(null);
   const [selectedOutfit, setSelectedOutfit] = useState(null);
-  const naviagtion = useNavigation();
+  const navigation = useNavigation();
 
   // Minimum required counts
   const MIN_TOPS = 2;
@@ -288,7 +288,7 @@ const handleWearToday = async (outfitItems, outfitIndex) => {
 
   useEffect(() => {
     loadRecommendations();
-  }, []);
+  }, [isFocused, temp]);
 
 const pickImage = async () => {
   const options = {
@@ -427,7 +427,7 @@ const pickImage = async () => {
 
       <Surface role='link' onTouchEnd={() => { 
         // router.navigate('/planner'); 
-        naviagtion.navigate('Planner');
+        navigation.navigate('Planner');
 
       }} elevation={2} style={{ backgroundColor: '#fff', height: responsiveHeight(12), width: '95%', marginTop: 0, alignSelf: 'center', borderRadius: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
         <ScrollView style={{ backgroundColor: '#fff', borderRadius: 10, padding: 10, margin: 10, shadowColor: '#000', shadowOpacity: 0.1, shadowRadius: 6 }}>
@@ -459,7 +459,7 @@ const pickImage = async () => {
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10, height: responsiveHeight(25), width: '95%', alignSelf: 'center', }}>
         <Surface onTouchEnd={() => {
           //  router.navigate('/Wardrobe');
-          naviagtion.navigate('Wardrobe');
+          navigation.navigate('Wardrobe');
 
          }} elevation={2} style={{ width: '68%', height: '95%', backgroundColor: '#fff', alignSelf: 'center', borderRadius: 10 }}>
           <View style={{ flexDirection: 'row', width: '100%', height: '20%', justifyContent: 'space-between', alignItems: 'center', marginTop: 10 }}>
@@ -473,7 +473,7 @@ const pickImage = async () => {
         <View style={{ flexDirection: 'column', width: '30%', height: '100%', alignSelf: 'center', justifyContent: 'space-around' }}>
           <Surface role='link' onTouchEnd={() => {
             //  router.push('/addManually');
-            naviagtion.navigate('/addManually');
+            navigation.navigate('addManually');
               }} elevation={2} style={{ width: '90%', height: '45%', alignSelf: 'center', borderRadius: 5, backgroundColor: '#fff', justifyContent: 'center', alignItems: 'center' }}>
             <Image source={require('../../assets/images/add.png')} style={{ height: 25, width: 25, marginHorizontal: 10 }} ></Image>
             <Text style={{ fontSize: 14, marginVertical: 0, marginHorizontal: 10, color: 'black', opacity: 0.6, fontFamily: 'Raleway-SemiBold' }}>Add Fits</Text>
@@ -519,7 +519,7 @@ const pickImage = async () => {
             setShowOptions(false);
             await AsyncStorage.clear();
             // router.navigate('/permission')
-            naviagtion.navigate('/permission');
+            navigation.navigate('permission');
           }}>
             <Text style={{ fontSize: 16, fontFamily: 'Raleway-SemiBold', paddingVertical: 5, color: 'red' }}>Logout</Text>
           </TouchableOpacity>
