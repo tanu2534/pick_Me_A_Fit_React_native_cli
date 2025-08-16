@@ -131,20 +131,20 @@ const RecommendationComponent = ({
     };
 
     const loadRecommendations = async () => {
-        console.log("Loading recommendations for", selectedDate);
+        //console.log("Loading recommendations for", selectedDate);
         try {
             const dateKey = getDateKey(selectedDate);
-            console.log("Date key:", dateKey);
+            //console.log("Date key:", dateKey);
 
             // Check if outfit already selected for this date
             if (isToday(selectedDate)) {
                 const selectedOutfitData = await AsyncStorage.getItem("@todaySelectedOutfit");
-                console.log("Selected outfit data:", selectedOutfitData);
+                //console.log("Selected outfit data:", selectedOutfitData);
                 if (selectedOutfitData) {
                     const outfit = JSON.parse(selectedOutfitData);
-                    console.log("Parsed outfit:", outfit);
+                    //console.log("Parsed outfit:", outfit);
                     if (outfit.date === dateKey) {
-                        console.log("Outfit already selected for today");
+                        //console.log("Outfit already selected for today");
                         setSelectedOutfit(outfit);
                               setPlannedOutfit(null); // Clear planned outfit
                         setRecommendations(null);
@@ -154,12 +154,12 @@ const RecommendationComponent = ({
             } else {
                 // Check planned outfits for future dates
                 const plannedOutfits = await AsyncStorage.getItem("@plannedOutfits");
-                console.log("Planned outfits:", plannedOutfits);
+                //console.log("Planned outfits:", plannedOutfits);
                 if (plannedOutfits) {
                     const planned = JSON.parse(plannedOutfits);
-                    console.log("Parsed planned outfits:", planned);
+                    //console.log("Parsed planned outfits:", planned);
                     if (planned[dateKey]) {
-                        console.log("Planned outfit found for", dateKey);
+                        //console.log("Planned outfit found for", dateKey);
                         setPlannedOutfit(planned[dateKey]);
                           setSelectedOutfit(null); // Clear selected outfit
                         setRecommendations(null);
@@ -169,7 +169,7 @@ const RecommendationComponent = ({
             }
 
              if (hasPlannedOutfit) {
-                console.log("Parent says outfit is planned but we didn't find it, refreshing...");
+                //console.log("Parent says outfit is planned but we didn't find it, refreshing...");
                 // Force refresh by not returning here, let recommendations load
                 // This handles edge cases where parent and child are out of sync
             }
@@ -178,10 +178,10 @@ const RecommendationComponent = ({
 
             // Load wash cycle info
             let washcycle = await AsyncStorage.getItem("washcycle");
-            console.log("Wash cycle:", washcycle);
+            //console.log("Wash cycle:", washcycle);
             washcycle = JSON.parse(washcycle);
             if (!washcycle) {
-                console.log("Wash cycle not set by user");
+                //console.log("Wash cycle not set by user");
                 setRecommendationMessage("Wash cycle not set by user");
                  setRecommendations(null);
                 return;
@@ -189,31 +189,31 @@ const RecommendationComponent = ({
 
             // Load wardrobe
             let Wardrobe = await AsyncStorage.getItem("@smartWardrobeItems");
-            console.log("Wardrobe:", Wardrobe);
+            //console.log("Wardrobe:", Wardrobe);
             Wardrobe = JSON.parse(Wardrobe);
             if (!Wardrobe || !Array.isArray(Wardrobe) || Wardrobe.length === 0) {
-                console.log("No wardrobe items found");
+                //console.log("No wardrobe items found");
                 setRecommendationMessage("No wardrobe items found. Please add wardrobe to get daily recommendations.");
                   setRecommendations(null);
                 return;
             }
 
             if (!hasEnoughItems(Wardrobe)) {
-                console.log("Not enough wardrobe items to generate recommendations");
+                //console.log("Not enough wardrobe items to generate recommendations");
                 setRecommendationMessage("Not enough wardrobe items to generate recommendations, at least 2 tops and 2 bottoms and total of 5 items are required.");
                   setRecommendations(null);
                 return;
             }
 
             const unwashedItems = getUnwashedItems(Wardrobe, washcycle);
-            console.log("Unwashed items:", unwashedItems);
+            //console.log("Unwashed items:", unwashedItems);
             const recentWornIds = unwashedItems.map(item => item.id);
-            console.log("Recent worn item IDs:", recentWornIds);
+            //console.log("Recent worn item IDs:", recentWornIds);
 
             const engine = new OutfitRecommendationEngine();
-            console.log("Engine created");
+            //console.log("Engine created");
             const recommendations = engine.recommendOutfits(Wardrobe, parseInt(temperature || 25), "casual", recentWornIds);
-            console.log("Recommendations:", recommendations);
+            //console.log("Recommendations:", recommendations);
 
             setRecommendations(recommendations);
 

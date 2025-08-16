@@ -98,7 +98,7 @@ const selectImage = async () => {
 
     launchImageLibrary(options, async (response) => {
       if (response.didCancel) {
-        console.log('User cancelled image picker');
+        //console.log('User cancelled image picker');
       } else if (response.errorCode) {
         console.error('ImagePicker Error:', response.errorMessage);
         Alert.alert('Error', 'Failed to select image');

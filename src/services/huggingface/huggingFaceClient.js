@@ -8,7 +8,7 @@ export const uriToBase64 = async (uri) => {
 
 export const predictWithYusyelModel = async (imageUri) => {
 
-  // console.log(JSON.stringify({
+  // //console.log(JSON.stringify({
   //       data: [`data:image/jpeg;base64,${imageUri}`],
   //     }))
 
@@ -26,7 +26,7 @@ try {
     });
 
     const result = await response.json();
-    console.log("Clothing Classification Result:", result);
+    //console.log("Clothing Classification Result:", result);
 
     return result.data;
   } catch (err) {
@@ -50,7 +50,7 @@ export const predictWithYusyelModelMulti = async (base64Array) => {
     });
 
     const result = await response.json();
-    console.log("Batch Clothing Classification Result:", result);
+    //console.log("Batch Clothing Classification Result:", result);
 
     return result.data; // array of predictions
   } catch (err) {

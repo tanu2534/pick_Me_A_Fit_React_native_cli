@@ -163,7 +163,7 @@ const assets = photos.edges.map(edge => ({
          base64Batch.filter(Boolean)
        )
 
-       console.log("Predictions:", predictions);
+       //console.log("Predictions:", predictions);
        
 
 const processedResults = await Promise.all(
@@ -243,7 +243,7 @@ const processedResults = await Promise.all(
      const updated = [...existing, ...items]
      await AsyncStorage.setItem('@smartWardrobeItems', JSON.stringify(updated))
    } catch (error) {
-     console.log("Error saving to wardrobe:", error)
+     //console.log("Error saving to wardrobe:", error)
    }
  }
 

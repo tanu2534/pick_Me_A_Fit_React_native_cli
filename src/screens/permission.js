@@ -384,7 +384,7 @@ const Permission = () => {
                 navigation.navigate('permission2');
 
               } catch(e) {
-                console.log("this is error", e);
+                //console.log("this is error", e);
               }
             }}
             style={[styles.button, {

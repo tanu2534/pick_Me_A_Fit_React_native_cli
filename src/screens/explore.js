@@ -26,7 +26,7 @@ export default function TabTwoScreen() {
     (async () => {
       setLoading(true);
       const a = await AsyncStorage.getItem('@smartWardrobeItems');
-      console.log("All items:", a);
+      //console.log("All items:", a);
       if (a) {
         const parsed = JSON.parse(a);
 
@@ -68,7 +68,7 @@ export default function TabTwoScreen() {
   // Helper functions
   const editItem = async (item, categoryName) => {
     try {
-      console.log("Removing item from UI + Storage:", item);
+      //console.log("Removing item from UI + Storage:", item);
 
       // Update state
       const updatedCategories = categories.map(category => {
@@ -88,15 +88,15 @@ export default function TabTwoScreen() {
 
       // Update AsyncStorage
       const raw = await AsyncStorage.getItem('@smartWardrobeItems');
-      console.log("Raw storage before:", raw);
+      //console.log("Raw storage before:", raw);
       const allItems = JSON.parse(raw) || [];
 
-      console.log("Item ID to remove:", item.id);
+      //console.log("Item ID to remove:", item.id);
       const filteredItems = allItems.filter(i => i.id !== item.id);
-      console.log("Items after filter:", filteredItems);
+      //console.log("Items after filter:", filteredItems);
 
       await AsyncStorage.setItem('@smartWardrobeItems', JSON.stringify(filteredItems));
-      console.log("Updated storage saved successfully.");
+      //console.log("Updated storage saved successfully.");
     } catch (error) {
       console.error("Failed to delete item:", error);
     }
@@ -110,7 +110,7 @@ export default function TabTwoScreen() {
 
       // 2. Update AsyncStorage
       const allItems = JSON.parse(await AsyncStorage.getItem('@smartWardrobeItems')) || [];
-      console.log("All items:", allItems);
+      //console.log("All items:", allItems);
 
 
       const updatedAllItems = allItems.map(i =>
@@ -157,7 +157,7 @@ export default function TabTwoScreen() {
       }
 
       setCategories(updatedCategories);
-      console.log(`Item moved from ${fromCategory} → ${toCategory}`);
+      //console.log(`Item moved from ${fromCategory} → ${toCategory}`);
     } catch (error) {
       console.error("Error moving item:", error);
     }
@@ -166,7 +166,7 @@ export default function TabTwoScreen() {
 
 
   const moveItem = (item, categoryName) => {
-    console.log("Move item:", item, "from category:", categoryName);
+    //console.log("Move item:", item, "from category:", categoryName);
     setSelectedItem(item);
     setFromCategory(categoryName);
     setCategoryModal(true);
@@ -264,14 +264,14 @@ export default function TabTwoScreen() {
                     <TouchableOpacity
                       key={itemIndex}
                       onLongPress={() => {
-                        console.log("Long pressed");
+                        //console.log("Long pressed");
                         setShowOptions(prev => ({
                           ...prev,
                           [uniqueKey]: !prev[uniqueKey] // Sirf is specific item ke liye toggle
                         }));
                       }}
                       onPress={() => {
-                        console.log("Pressed");
+                        //console.log("Pressed");
                         setShowOptions(prev => ({
                           ...prev,
                           [uniqueKey]: false // Sirf is item ke options hide karo

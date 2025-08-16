@@ -25,7 +25,7 @@ const Onboarding = () => {
   useEffect(() => {
     (async () => {
       const storedUser = await AsyncStorage.getItem('name');
-      console.log(storedUser);
+      //console.log(storedUser);
       if (storedUser) {
         navigation.replace('tabs'); // CLI navigation
         setUser(storedUser);

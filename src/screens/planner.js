@@ -396,7 +396,7 @@ useEffect(() => {
   //       notes: 'Your outfit plan for today!',
   //     });
 
-  //     // console.log('Event created:', eventId);
+  //     // //console.log('Event created:', eventId);
   //     alert('Plan added to calendar 🎀');
   //   } catch (err) {
   //     console.error('Failed to create event:', err);
@@ -428,7 +428,7 @@ const eventsForSelectedDate = allEvents.filter(event => {
         style={styles.calendar}
         onDayPress={(day) => {
           const today = new Date().toISOString().split('T')[0];
-          console.log("today ", today, day)
+          //console.log("today ", today, day)
           if(day.dateString === today) return
           setSelectedDate(day.dateString);
         }}
@@ -560,7 +560,7 @@ const eventsForSelectedDate = allEvents.filter(event => {
             temperature={25}
             hasPlannedOutfit={!!plannedOutfitForDate} // Pass this prop
             onOutfitSelected={(items, index, date) => {
-              console.log('Outfit planned for:', date, items);
+              //console.log('Outfit planned for:', date, items);
               // Refresh planned outfit state
               setPlannedOutfitForDate({
                 items,

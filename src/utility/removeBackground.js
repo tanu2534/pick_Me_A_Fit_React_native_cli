@@ -49,7 +49,7 @@ export const removeBackgroundFromImageUri = async (imageUri) => {
     });
     return backgroundRemovedImageURI
   } catch (error) {
-    console.log("BG Removal Failed:", error);
+    //console.log("BG Removal Failed:", error);
     return null;
   }
 };

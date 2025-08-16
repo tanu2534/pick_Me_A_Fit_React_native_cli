@@ -17,7 +17,7 @@ import OutfitRecommendationEngine from '../services/recommendation';
 import { responsiveHeight } from '../utility/responsive';
 
 export default function HomeScreen() {
-  console.log("this is index");
+  //console.log("this is index");
   const [washCycleMessage, setWashCycleMessage] = useState("stay Home #COVID19");
 
   const [userImage, setUserImage] = useState(null);
@@ -182,7 +182,7 @@ const loadWashCycleInfo = async () => {
 
     return wardrobeItems.filter(item => {
       if (!item.wearAt) {
-        console.log(`⏳ Item ${item.label || item.id} has no wearAt date, assuming it's clean`);
+        //console.log(`⏳ Item ${item.label || item.id} has no wearAt date, assuming it's clean`);
         return false;
       }
       const wornDate = new Date(item.wearAt);
@@ -251,7 +251,7 @@ const handleWearToday = async (outfitItems, outfitIndex) => {
       let washcycle = await AsyncStorage.getItem("washcycle");
       washcycle = JSON.parse(washcycle);
       if (!washcycle) {
-        console.log(" Wash cycle not set by user");
+        //console.log(" Wash cycle not set by user");
         setRecommendationMessage("Wash cycle not set by user");
         return;
       }
@@ -260,13 +260,13 @@ const handleWearToday = async (outfitItems, outfitIndex) => {
       let Wardrobe = await AsyncStorage.getItem("@smartWardrobeItems");
       Wardrobe = JSON.parse(Wardrobe);
       if (!Wardrobe || !Array.isArray(Wardrobe) || Wardrobe.length === 0) {
-        console.log(" No wardrobe items found");
+        //console.log(" No wardrobe items found");
         setRecommendationMessage("No wardrobe items found. Please add wardrobe to get daily recommendations.");
         return;
       }
 
       if (!hasEnoughItems(Wardrobe)) {
-        console.log("Not enough wardrobe items to generate recommendations");
+        //console.log("Not enough wardrobe items to generate recommendations");
         setRecommendationMessage("Not enough wardrobe items to generate recommendations");
         return;
       }
@@ -278,7 +278,7 @@ const handleWearToday = async (outfitItems, outfitIndex) => {
       const recommendations = engine.recommendOutfits(Wardrobe, parseInt(temp), "casual", recentWornIds);
 
       setRecommendations(recommendations);
-      console.log("Recommendations:", recommendations[0]);
+      //console.log("Recommendations:", recommendations[0]);
 
     } catch (error) {
       console.error("Error loading recommendations:", error);
@@ -301,9 +301,9 @@ const pickImage = async () => {
 
   launchImageLibrary(options, async (response) => {
     if (response.didCancel) {
-      console.log('User cancelled image picker');
+      //console.log('User cancelled image picker');
     } else if (response.errorCode) {
-      console.log('ImagePicker Error:', response.errorMessage);
+      //console.log('ImagePicker Error:', response.errorMessage);
     } else if (response.assets && response.assets.length > 0) {
       const uri = response.assets[0].uri;
       await AsyncStorage.setItem('profileImage', uri);
@@ -316,7 +316,7 @@ const pickImage = async () => {
     try {
       const raw = await AsyncStorage.getItem('@smartWardrobeItems');
       const allItems = JSON.parse(raw) || [];
-      console.log("Total items:", allItems.length);
+      //console.log("Total items:", allItems.length);
       return allItems.length;
     } catch (error) {
       console.error("Error fetching total items:", error);
@@ -326,7 +326,7 @@ const pickImage = async () => {
 
   useEffect(() => {
     (async () => {
-      console.log("this is async");
+      //console.log("this is async");
       try {
         let name = await AsyncStorage.getItem('name');
         setUser(name);
@@ -375,7 +375,7 @@ const pickImage = async () => {
           setEventToday(allEvents);
         } else {
           setEventToday(null);
-          console.log('❌ Aaj koi event nahi hai');
+          //console.log('❌ Aaj koi event nahi hai');
         }
       } else {
         Alert.alert('Permission Needed', 'Calendar access is required');
@@ -493,7 +493,7 @@ const pickImage = async () => {
 <RecommendationComponent 
   temperature={temp}
   onOutfitSelected={(items, index, date) => {
-    console.log('Outfit selected on home screen:', items);
+    //console.log('Outfit selected on home screen:', items);
   }}
 />
 </ScrollView>

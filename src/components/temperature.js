@@ -33,7 +33,7 @@ export default function Weather() {
       if (temp !== undefined && mountedRef.current) {
         setTemperature(temp);
         dispatch(setTemperatureAction(temp));
-        console.log('Temperature fetched:', temp);
+        //console.log('Temperature fetched:', temp);
         
         // Clear timeout once temperature is successfully fetched
         if (timeoutRef.current) {
@@ -44,7 +44,7 @@ export default function Weather() {
         setErrorMsg('Temperature not found');
       }
     } catch (e) {
-      console.log('Temperature fetch error:', e);
+      //console.log('Temperature fetch error:', e);
       if (mountedRef.current) {
         setErrorMsg('Failed to fetch temperature');
       }
@@ -58,9 +58,9 @@ export default function Weather() {
   const saveLastGPSLocation = async (location) => {
     try {
       await AsyncStorage.setItem(LAST_GPS_LOCATION_KEY, JSON.stringify(location));
-      console.log('GPS location saved successfully');
+      //console.log('GPS location saved successfully');
     } catch (error) {
-      console.log('Error saving GPS location:', error);
+      //console.log('Error saving GPS location:', error);
     }
   };
 
@@ -69,7 +69,7 @@ export default function Weather() {
       const lastLocation = await AsyncStorage.getItem(LAST_GPS_LOCATION_KEY);
       return lastLocation ? JSON.parse(lastLocation) : null;
     } catch (error) {
-      console.log('Error getting last GPS location:', error);
+      //console.log('Error getting last GPS location:', error);
       return null;
     }
   };
@@ -78,7 +78,7 @@ export default function Weather() {
     if (!mountedRef.current) return;
     
     try {
-      console.log('Fetching location from IP...');
+      //console.log('Fetching location from IP...');
       
       // Fix: Proper timeout implementation for fetch
       const controller = new AbortController();
@@ -91,7 +91,7 @@ export default function Weather() {
       clearTimeout(timeoutId);
       const data = await response.json();
       
-      console.log('IP Location data:', data);
+      //console.log('IP Location data:', data);
       
       if (data.status === 'success' && mountedRef.current) {
         setLocationName(`${data.city} (Network)`);
@@ -100,11 +100,11 @@ export default function Weather() {
         throw new Error('IP location service returned error');
       }
     } catch (error) {
-      console.log('IP Location Error:', error.message);
+      //console.log('IP Location Error:', error.message);
       if (mountedRef.current) {
         // Try alternative IP service as backup
         try {
-          console.log('Trying backup IP service...');
+          //console.log('Trying backup IP service...');
           const controller = new AbortController();
           const timeoutId = setTimeout(() => controller.abort(), 8000);
           
@@ -121,7 +121,7 @@ export default function Weather() {
             return;
           }
         } catch (backupError) {
-          console.log('Backup IP service also failed:', backupError);
+          //console.log('Backup IP service also failed:', backupError);
         }
         
         setErrorMsg('Unable to get location');
@@ -143,10 +143,10 @@ export default function Weather() {
             buttonPositive: 'OK',
           }
         );
-        console.log('Permission result:', granted);
+        //console.log('Permission result:', granted);
         return granted === PermissionsAndroid.RESULTS.GRANTED;
       } catch (error) {
-        console.log('Permission request error:', error);
+        //console.log('Permission request error:', error);
         return false;
       }
     }
@@ -155,7 +155,7 @@ export default function Weather() {
 
   const reverseGeocode = async (latitude, longitude) => {
     try {
-      console.log('Starting reverse geocoding...');
+      //console.log('Starting reverse geocoding...');
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 8000);
       
@@ -171,7 +171,7 @@ export default function Weather() {
       
       clearTimeout(timeoutId);
       const data = await response.json();
-      console.log('Geocoding response received');
+      //console.log('Geocoding response received');
       
       if (data.address) {
         const city = data.address?.city || 
@@ -189,7 +189,7 @@ export default function Weather() {
         throw new Error('No address found');
       }
     } catch (error) {
-      console.log('Reverse geocoding failed:', error.message);
+      //console.log('Reverse geocoding failed:', error.message);
       return {
         city: 'Current Location',
         region: '',
@@ -202,37 +202,37 @@ export default function Weather() {
     if (!mountedRef.current) return;
     
     try {
-      console.log('Starting location fetch...');
+      //console.log('Starting location fetch...');
       
       const hasPermission = await requestLocationPermission();
-      console.log('Has location permission:', hasPermission);
+      //console.log('Has location permission:', hasPermission);
       
       if (!hasPermission) {
-        console.log('Permission denied, checking last GPS location...');
+        //console.log('Permission denied, checking last GPS location...');
         
         const lastGPSLocation = await getLastGPSLocation();
         if (lastGPSLocation && mountedRef.current) {
-          console.log('Using last GPS location');
+          //console.log('Using last GPS location');
           setLocationName(`${lastGPSLocation.city} (Last GPS)`);
           await fetchTemperature(lastGPSLocation.latitude, lastGPSLocation.longitude);
           return;
         }
         
-        console.log('No last GPS location, using IP location');
+        //console.log('No last GPS location, using IP location');
         await getLocationFromIP();
         return;
       }
 
-      console.log('Getting current position...');
+      //console.log('Getting current position...');
       
       const locationPromise = new Promise((resolve, reject) => {
         Geolocation.getCurrentPosition(
           (position) => {
-            console.log('GPS position obtained successfully');
+            //console.log('GPS position obtained successfully');
             resolve(position);
           },
           (error) => {
-            console.log('GPS error:', error.code, error.message);
+            //console.log('GPS error:', error.code, error.message);
             reject(error);
           },
           {
@@ -280,27 +280,27 @@ export default function Weather() {
       }
       
     } catch (error) {
-      console.log('GPS Location Error:', error.message);
+      //console.log('GPS Location Error:', error.message);
       
       if (!mountedRef.current) return;
       
       // Try cached location first
       const lastGPSLocation = await getLastGPSLocation();
       if (lastGPSLocation) {
-        console.log('Using cached GPS location after GPS error');
+        //console.log('Using cached GPS location after GPS error');
         setLocationName(`${lastGPSLocation.city} (Last GPS)`);
         await fetchTemperature(lastGPSLocation.latitude, lastGPSLocation.longitude);
         return;
       }
       
       // Final fallback to IP location
-      console.log('No cached GPS, using IP location as final fallback');
+      //console.log('No cached GPS, using IP location as final fallback');
       await getLocationFromIP();
     }
   };
 
   useEffect(() => {
-    console.log('Weather component mounted');
+    //console.log('Weather component mounted');
     mountedRef.current = true;
     
     // Start location fetch
@@ -308,16 +308,16 @@ export default function Weather() {
 
     // Set safety timeout - only if component is still mounted and loading
     timeoutRef.current = setTimeout(() => {
-      console.log('Safety timeout check - loading:', loading, 'temperature:', temperature, 'errorMsg:', errorMsg);
+      //console.log('Safety timeout check - loading:', loading, 'temperature:', temperature, 'errorMsg:', errorMsg);
       if (mountedRef.current && loading && !temperature && !errorMsg) {
-        console.log('Triggering final timeout error');
+        //console.log('Triggering final timeout error');
         setErrorMsg('Unable to get weather data');
         setLoading(false);
       }
     }, 30000); // Increased to 30 seconds
 
     return () => {
-      console.log('Weather component unmounting');
+      //console.log('Weather component unmounting');
       mountedRef.current = false;
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
