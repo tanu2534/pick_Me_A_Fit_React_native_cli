@@ -42,18 +42,19 @@ const Onboarding = () => {
   };
 
   const slides = [
+      {
+      title: 'Your Wardrobe, Organized',
+      description:
+        'Easily build your digital closet, categorize outfits, and keep everything you own right at your fingertips — anytime, anywhere.',
+      image: require('../../assets/images/ward.png'),
+    },
     {
       title: 'Get Styled Everyday',
       description:
         'Receive personalized outfit suggestions tailored to your mood, occasion, or even the weather — so you always step out in style.',
       image: require('../../assets/images/dress.png'),
     },
-    {
-      title: 'Your Wardrobe, Organized',
-      description:
-        'Easily build your digital closet, categorize outfits, and keep everything you own right at your fingertips — anytime, anywhere.',
-      image: require('../../assets/images/ward.png'),
-    },
+  
     {
       title: 'Auto-Detect Your Outfits (coming soon)',
       description:
@@ -65,7 +66,7 @@ const Onboarding = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={{ alignItems: 'center', marginTop: 60 }}>
-        <Image source={require('../../assets/images/bow.png')} style={{ width: 50, height: 50 }} />
+        {/* <Image source={require('../../assets/images/bow.png')} style={{ width: 50, height: 50 }} />
         <Text style={[styles.title, {
           color: '#d36491',
           fontFamily: 'concertOne',
@@ -74,8 +75,8 @@ const Onboarding = () => {
           textAlign: 'center'
         }]}>
           Pick me a fit
-        </Text>
-        <Text style={[styles.description, {
+        </Text> */}
+        {/* <Text style={[styles.description, {
           color: '#666',
           fontFamily: 'Raleway-Regular',
           lineHeight: 25,
@@ -83,11 +84,11 @@ const Onboarding = () => {
           marginTop: 0
         }]}>
           Discover the perfect outfits for you
-        </Text>
+        </Text> */}
       </View>
 
       <FlatList
-        style={{ marginTop: 35, maxHeight: 350, width: '100%' }}
+        style={{ position: 'relative', bottom: '0%', maxHeight: 350, width: '100%', marginBottom: '40%' }}
         ref={ref}
         data={slides}
         keyExtractor={(_, index) => index.toString()}
@@ -96,7 +97,7 @@ const Onboarding = () => {
         showsHorizontalScrollIndicator={false}
         onMomentumScrollEnd={updateCurrentSlideIndex}
         renderItem={({ item }) => (
-          <Surface elevation={3} style={{
+          <Surface elevation={0} style={{
             width: width * 0.8,
             alignItems: 'center',
             padding: 20,
@@ -180,7 +181,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffffff',
     alignItems: 'center',
     height: '100%',
-    width: '100%'
+    width: '100%',
+    justifyContent:'flex-end'
   },
   title: {
     fontSize: responsiveFontSize(24),
@@ -199,16 +201,21 @@ const styles = StyleSheet.create({
     width: '80%',
     padding: 15,
     borderRadius: 50,
-    marginBottom: 50,
+    marginBottom: 10,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'absolute',
+    bottom: '8%'
   },
   flat: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 60
+    marginBottom: 0, 
+    position: 'absolute',
+    bottom: '15%',
+    marginBottom: 50
   },
   dot: {
     width: 8,
