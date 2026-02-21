@@ -26,11 +26,14 @@ export const Colors = {
 
   cream: '#FFF8F2',
   surface: '#FFFFFF',
+  PeachLight: "#FFE4D1",
+  PeachUltraLight:"#FFF0E6",
   peach: '#FFCBA4',
   terra: '#E8845A',
-  terraDark: '#C9653E',
+  terraDark: '#030303',
   brown: '#3D1F0D',
   muted: '#8B5E3C',
   sage: '#B5C9A1',
   disabled: '#E5E5E5',
+  disabledGrey : '#afafafa4'
 };

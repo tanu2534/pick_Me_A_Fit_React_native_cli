@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 import { Text, View, ActivityIndicator, PermissionsAndroid, Platform } from 'react-native';
 import { useDispatch } from 'react-redux';
 import Geolocation from 'react-native-geolocation-service';
+import { Colors } from '../constants/Colors';
 
 const LAST_GPS_LOCATION_KEY = 'lastGPSLocation';
 
@@ -334,11 +335,11 @@ export default function Weather() {
   }, []);
 
   return (
-    <View style={{ padding: 10 }}>
+    <View style={{ padding: 10 , backgroundColor: Colors.surface, borderRadius: 50}}>
       {loading ? (
-        <View style={{ alignItems: 'flex-start', justifyContent: 'center', minHeight: 50 }}>
-          <ActivityIndicator size="small" color="#d36491" />
-          <Text
+        <View style={{ alignItems: 'flex-start', justifyContent: 'center',  }}>
+          <ActivityIndicator size="small" color={Colors.terra} />
+          {/* <Text
             style={{
               color: '#666',
               fontSize: 12,
@@ -348,11 +349,11 @@ export default function Weather() {
             }}
           >
             Getting weather...
-          </Text>
+          </Text> */}
         </View>
       ) : errorMsg ? (
         <View>
-          <Text style={{ color: 'red', fontSize: 14 }}>⚠️ {errorMsg}</Text>
+          <Text style={{ color: 'red', fontSize: 14 }}>⚠️</Text>
         </View>
       ) : (
         <View>

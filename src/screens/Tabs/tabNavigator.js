@@ -1,6 +1,6 @@
 // src/navigation/TabNavigator.js
 import React from 'react';
-import { Platform, View } from 'react-native';
+import { Platform, StatusBar, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useColorScheme } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -18,10 +18,11 @@ export default function TabNavigator() {
 
   return (
     <View style={{ flex: 1, backgroundColor: '#ffffffff' }}>
+      <StatusBar backgroundColor={Colors.cream} translucent={false} barStyle="dark-content" />
       <Tab.Navigator
         
         screenOptions={{
-          tabBarActiveTintColor: Colors[ 'light'].tint,
+          tabBarActiveTintColor: Colors.terra,
           headerShown: false,
         
           tabBarLabelStyle: {

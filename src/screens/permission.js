@@ -2,11 +2,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState , useRef} from 'react';
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View, Animated, Dimensions } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View, Animated, Dimensions, LayoutAnimation, UIManager, Platform } from 'react-native';
 import { Surface, TextInput } from 'react-native-paper';
-import { responsiveFontSize, responsiveHeight } from '../utility/responsive';
+import { responsiveFontSize, responsiveHeight, responsiveWidth } from '../utility/responsive';
+import { Colors } from '../constants/Colors';
 
 const Permission = () => {
+  if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+  }
 //   const AnimatedDressCarousel = () => {
 //   const scrollY = useRef(new Animated.Value(0)).current;
 //   const [currentIndex, setCurrentIndex] = useState(0);
@@ -83,9 +87,9 @@ const Permission = () => {
   const washcycleOptions = [
     { emoji: "🧺", label: "Daily" , uri : require("../../assets/images/daily.png")},
     { emoji: "📅", label: "Weekly", uri : require("../../assets/images/weekly.png") },
-    { emoji: "🗓️", label: "Bi-weekly" ,uri : require("../../assets/images/weekly.png")},
-    { emoji: "🔄", label: "Monthly", uri : require('../../assets/images/monthly.png') },
-    { emoji: "🎯", label: "As needed" , uri : require("../../assets/images/need.png")},
+    { emoji: "🗓️", label: "Bi-weekly" ,uri : require("../../assets/images/bi-weekly.png")},
+    // { emoji: "🔄", label: "Monthly", uri : require('../../assets/images/monthly.png') },
+    { emoji: "🎯", label: "As needed" , uri : require("../../assets/images/hanger.png")},
   ];
 
   const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -99,6 +103,7 @@ const Permission = () => {
   const [washDay, setWashDay] = useState(null);
   const [washDate, setWashDate] = useState(null);
   const [customDays, setCustomDays] = useState(3);
+  const scrollViewRef = useRef(null);
 
   const pickImage = () => {
   launchImageLibrary(
@@ -147,9 +152,9 @@ const Permission = () => {
       case 'Weekly':
       case 'Bi-weekly':
         return (
-          <View style={{marginTop: 20, width: '100%'}}>
-            <Text style={[styles.sectionTitle, {alignSelf: 'flex-start', marginLeft: '10%'}]}>
-              Which day do you usually wash clothes?
+          <View style={{marginTop: 0, width: '100%', }}>
+            <Text style={[styles.sectionTitle, {alignSelf: 'flex-start', marginTop: 20}]}>
+              Which day you usually wash clothes?
             </Text>
             <View style={styles.optionsContainer}>
               {weekDays.map((day, index) => (
@@ -158,12 +163,12 @@ const Permission = () => {
                   onPress={() => setWashDay(day)}
                   style={[
                     styles.dayOption,
-                    { backgroundColor: washDay === day ? '#d36491' : 'white' }
+                    { backgroundColor: washDay === day ? Colors.peach : 'white' }
                   ]}
                 >
                   <Text style={[
                     styles.dayText,
-                    { color: washDay === day ? 'white' : '#d36491' }
+                    { color: washDay === day ? 'white' : Colors.peach }
                   ]}>
                     {day.slice(0, 3)}
                   </Text>
@@ -183,6 +188,7 @@ const Permission = () => {
               horizontal 
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={styles.dateScrollContainer}
+              scrollsToTop
             >
               {monthDays.map((date) => (
                 <TouchableOpacity
@@ -211,17 +217,19 @@ const Permission = () => {
   };
 
   return (
-    <View style={{backgroundColor: '#f9d3d9', flex: 1}}>
-      <Text style={styles.title}>Let's know you 🌸</Text>
+    <View style={{backgroundColor: Colors.cream, flex: 1, paddingHorizontal: responsiveWidth(8)}}>
+      <Text style={styles.title}>Let's know you</Text>
+      <Text style={styles.small}>Tell us a little about yourself so we can personalize your style.</Text>
 
          {/* <AnimatedDressCarousel /> */}
       
       <ScrollView 
+        ref={scrollViewRef}
         style={styles.container} 
         contentContainerStyle={{
           alignItems: 'center',
           justifyContent: 'flex-start',
-          paddingBottom: 50, // Important: Add padding for scroll
+          // paddingBottom: 50, // Important: Add padding for scroll
           minHeight: '100%'
         }}
         showsVerticalScrollIndicator={false}
@@ -233,40 +241,47 @@ const Permission = () => {
               style={{ width: 100, height: 100, borderRadius: 50 }}
             />
           ) : (
-            <Image source={require('../../assets/images/cam.png')} />
+            <>
+            <Image style={{ width: 45, height: 45,  }} source={require('../../assets/images/cam.png')} />
+            <View style={styles.smallCircle}>
+             <Image  style={{ width: 20, height: 20, tintColor: Colors.surface }} source={require('../../assets/images/plus.png')}/>
+            </View>
+            </>
           )}
         </TouchableOpacity>
 
-        <Text style={{
+        {/* <Text style={{
           color: '#666',
           fontFamily: 'Raleway-Regular',
           fontSize: responsiveFontSize(16),
           marginTop: 0
         }}>
           Profile Picture (optional)
-        </Text>
+        </Text> */}
 
-        <View style={{ width: '100%', alignItems: 'center' }}>
+        <View style={{ width: '100%', alignItems: 'center',  }}>
           {/* Name Input */}
-          <View style={{ width: '100%', marginTop: 10, borderRadius: 100, alignItems: 'center', justifyContent: 'center' }}>
+          <View style={{ width: '100%', marginTop: 10, borderRadius: 100, alignItems: 'flex-start', justifyContent: 'center', }}>
+            <Text style={[styles.small, {fontFamily: 'Raleway-Bold', fontSize:responsiveFontSize(16)}]}>Your Name</Text>
             <TextInput
               style={styles.input}
               mode="flat"
-              label={<Text style={{ color: '#d36491', fontFamily: 'Raleway-Regular' }}>Name</Text>}
+              label={<Text style={{ color: '#35000048', fontFamily: 'Raleway-Regular', opacity: 0.2 }}>e.g. CutiPie</Text>}
               value={name}
               onChangeText={setName}
-              activeUnderlineColor='#d36491'
-              underlineColor='#d36491'
-              outlineColor="#d36491"
-              activeOutlineColor="#d36491"
-              textColor='#d36491'
-              placeholderTextColor="#d36491"
+              activeUnderlineColor={Colors.peach}
+           underlineColor={Colors.surface}
+              // outlineColor="#d36491"
+              // activeOutlineColor="#d36491"
+              textColor={Colors.brown}
+              placeholderTextColor={Colors.brown}
+              // placeholder='CutiPie'
               theme={{
                 roundness: 20,
                 colors: {
-                  primary: '#d36491',
-                  placeholder: '#d36491',
-                  text: '#d36491',
+                  // primary: '#d36491',
+                  // placeholder: '#d36491',
+                  // text: '#d36491',
                 },
                 fonts: {
                   regular: { fontFamily: 'Raleway-Regular' },
@@ -276,7 +291,7 @@ const Permission = () => {
           </View>
 
           {/* Mood Selection */}
-          <Text style={{
+          {/* <Text style={{
             color: '#666',
             fontFamily: 'Raleway-Bold',
             fontSize: responsiveFontSize(16),
@@ -323,9 +338,12 @@ const Permission = () => {
                 </TouchableOpacity>
               );
             })}
-          </View>
+          </View> */}
 
           {/* Washcycle Selection */}
+
+          <View style={{ width: '100%', alignItems: 'flex-start', paddingHorizontal: 0,  }}>
+
           <Text style={styles.sectionTitle}>Wash Cycle Preference</Text>
           <View style={styles.washcycleContainer}>
             {washcycleOptions.map((item, index) => {
@@ -334,13 +352,22 @@ const Permission = () => {
                 <TouchableOpacity
                   key={index}
                   onPress={() => {
+                    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
                     setSelectedWashcycle(item.label);
                     setWashDay(null);
                     setWashDate(null);
                     setCustomDays(3);
+                    
+                    setTimeout(() => {
+                      if (item.label === 'Weekly' || item.label === 'Bi-weekly') {
+                        scrollViewRef.current?.scrollToEnd({ animated: true });
+                      } else {
+                        scrollViewRef.current?.scrollTo({ y: 0, animated: true });
+                      }
+                    }, 300);
                   }}
                   style={[styles.washcycleOption, {
-                    backgroundColor: isSelected ? '#f9d3d9' : 'white'
+                    backgroundColor: isSelected ? Colors.PeachUltraLight : 'white'
                   }]}
                 >
                   {/* <Text style={[styles.washcycleEmoji, {
@@ -348,9 +375,12 @@ const Permission = () => {
                   }]}>
                     {item.emoji}
                   </Text> */}
-                  <Image source={item.uri} style={{height: 28, width: 28}} />
+                  <View style={{backgroundColor: isSelected? Colors.peach: Colors.PeachUltraLight,borderRadius: 50, height: 38, width: 38, justifyContent: 'center', alignItems: 'center' }}>
+
+                  <Image source={item.uri} style={{height: 28, width: 28, tintColor : isSelected? Colors.surface : Colors.peach}} />
+                  </View>
                   <Text style={[styles.washcycleLabel, {
-                    color:  '#d36491'
+                    color: Colors.brown
                   }]}>
                     {item.label}
                   </Text>
@@ -361,6 +391,7 @@ const Permission = () => {
 
           {/* Washcycle Details */}
           {renderWashcycleDetails()}
+          </View>
 
           {/* Continue Button */}
           <TouchableOpacity
@@ -419,47 +450,47 @@ export default Permission;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
     width: '100%',
     marginTop: responsiveHeight(0),
-    borderTopRightRadius: 190,
-    borderTopLeftRadius: 190,
+    // borderTopRightRadius: 190,
+    // borderTopLeftRadius: 190,
     flex: 1, // Important for proper scroll
     zIndex: 10
   },
   title: {
     fontSize: responsiveFontSize(28),
-    color: '#d36491',
-    marginBottom: responsiveHeight(4),
+    color: Colors.brown,
+   marginBottom: responsiveHeight(1),
     fontFamily: 'Raleway-Bold',
     marginTop: responsiveHeight(4),
-    alignSelf: 'center'
+    alignSelf: 'flex-start'
   },
   profile: {
-    backgroundColor: '#fff',
+    backgroundColor: Colors.PeachLight ,
     height: responsiveHeight(15),
     width: responsiveHeight(15),
     borderRadius: 100,
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 2,
-    borderColor: '#d36491',
+    borderWidth: 4 ,
+    borderColor: Colors.surface,
     // position: "absolute",
     // top:30,
     zIndex: 999,
-    marginTop: 10
+    marginTop: 30
 
 
   },
   input: {
-    width: '80%',
+    width: '100%',
     marginTop: 10,
     color: '#d36491',
-    backgroundColor: 'transparent',
+    backgroundColor: Colors.surface,
   },
   button: {
-    backgroundColor: '#d36491',
-    width: '85%',
+    backgroundColor: Colors.terra,
+    width: '100%',
     padding: 15,
     borderRadius: 50,
     marginBottom: 20,
@@ -468,30 +499,32 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   washcycleContainer: {
-    width: '90%',
+    width: '100%',
     marginTop: 10,
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center'
   },
   washcycleOption: {
-    height: 60,
-    width: '28%',
+    height:80,
+    width: '45%',
     borderRadius: 10,
-    alignItems: 'center',
+    alignItems:'flex-start',
     justifyContent: 'center',
-    marginHorizontal: 6,
+    marginHorizontal: 5,
     marginVertical: 6,
     borderWidth: 2,
-    borderColor: '#d36491',
+    borderColor: Colors.peach,
+    paddingHorizontal: 20
   },
   washcycleEmoji: {
     fontSize: responsiveFontSize(20),
     marginBottom: 5
   },
   washcycleLabel: {
-    fontFamily: 'Raleway-Regular',
-    fontSize: responsiveFontSize(12)
+    fontFamily: 'Raleway-Medium',
+    fontSize: responsiveFontSize(12),
+
   },
   dayOption: {
     height: 40,
@@ -501,7 +534,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     margin: 5,
     borderWidth: 2,
-    borderColor: '#d36491',
+    borderColor:Colors.peach,
   },
   dayText: {
     fontFamily: 'Raleway-Regular',
@@ -526,11 +559,11 @@ const styles = StyleSheet.create({
     fontSize: responsiveFontSize(12)
   },
   sectionTitle: {
-    color: '#666',
+    color: Colors.brown,
     fontFamily: 'Raleway-Bold',
     fontSize: responsiveFontSize(16),
-    marginTop: 20,
-    marginHorizontal: '10%',
+    marginTop: 35,
+    // marginHorizontal: '10%',
     alignSelf: 'flex-start'
   },
   optionsContainer: {
@@ -540,4 +573,22 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'center'
   },
+  small:{
+    color:Colors.brown,
+      fontFamily: 'Raleway-Regular'
+  },
+  smallCircle: {
+    height: 35,
+    width: 35,
+    backgroundColor:Colors.peach,
+    borderRadius: 50,
+    borderWidth:2,
+    borderColor:Colors.surface,
+    position: 'absolute',
+    bottom: 0,
+    right: -5,
+    zIndex: 999,
+    justifyContent: "center",
+    alignItems: "center"
+  }
 });

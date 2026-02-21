@@ -1,9 +1,13 @@
 import { useNavigation } from "@react-navigation/native"
 import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { responsiveFontSize } from "../utility/responsive"
+import { Colors } from "../constants/Colors"
+import { useState } from "react"
+// import { grey100 } from "react-native-paper/lib/typescript/styles/themes/v2/colors"
 
 const permission2 = () => {
   const navigation = useNavigation()
+  const [isAIScanEnable, setIsAIScanEnable] = useState(false);
   return (
     <SafeAreaView style={styles.container}>
       {/* Header Section */}
@@ -13,7 +17,7 @@ const permission2 = () => {
            <Image source={require("../../assets/images/dressing.png")} style={{height: 30, width: 30}} />
           </View>
         </View>
-        <Text style={styles.title}>How would you like to add clothes?</Text>
+        <Text style={styles.title}>Add to Wardrobe</Text>
         <Text style={styles.subtitle}>Choose your preferred method to add items to your wardrobe</Text>
       </View>
 
@@ -21,17 +25,22 @@ const permission2 = () => {
           <View style={{flexDirection: 'row' , height: 300, backgroundColor: 'transparent', justifyContent: 'space-around', alignContent: 'center'}} >
 
   <TouchableOpacity 
-  disabled
+ disabled={!isAIScanEnable}
    onPress={() => { 
     // router.navigate('/scanning', {
     //   screen : 'Gallery Scanning'
     // })
-  }} style={[styles.surface,{width: '45%', flexDirection: 'column', height: '90%'}]} >
-    <Image source={require('../../assets/images/ai2.png')} style={{height: 30, width: 30, marginVertical: 10
+  }} style={[styles.surface,{width: '45%', flexDirection: 'column', height: '90%', borderColor: isAIScanEnable? Colors.peach : Colors.disabledGrey, borderStyle: isAIScanEnable? 'solid':  'dashed', position: 'relative'}]} >
+    {!isAIScanEnable && (
+      <View style={[styles.badge, !isAIScanEnable ? {borderColor : Colors.disabledGrey} : null]}>
+        <Text style={[styles.badgeText, !isAIScanEnable ? {color: Colors.disabledGrey} : null]}>Soon</Text>
+      </View>
+    )}
+    <Image source={require('../../assets/images/hanger.png')} style={{height: 30, width: 30, marginVertical: 10 , tintColor: isAIScanEnable? Colors.peach : Colors.disabledGrey
     }} />
     <View style={styles.inner}>
-      <Text style={[styles.cardTitle, {opacity: 0.5, fontSize: responsiveFontSize(16)}]}>AI Scan from Gallery (coming soon)</Text>
-      <Text style={[styles.cardSubtitle, {opacity: 0.5}]}>
+      <Text style={[styles.cardTitle, {opacity: isAIScanEnable? 1: 0.5, fontSize: responsiveFontSize(isAIScanEnable?20 : 16 )}]}>AI Scan from Gallery</Text>
+      <Text style={[styles.cardSubtitle, {opacity: isAIScanEnable? 1:0.5}]}>
         Automatically scan your phone gallery and organize your wardrobe
       </Text>
       {/* <Text style={[styles.cardSubtitle]}> (coming soon)</Text> */}
@@ -45,22 +54,25 @@ const permission2 = () => {
         // })
         navigation.navigate('addManually')
       }}
-       style={[styles.surface,{width: '45%', flexDirection: 'column', height: '90%'}]}>
+       style={[styles.surface,{width: '45%', flexDirection: 'column', height: '90%', position: 'relative'}]}>
+        <View style={styles.badge}>
+          <Text style={styles.badgeText}>Recommended</Text>
+        </View>
         <Image source={require('../../assets/images/cam.png')} style={{height: 30, width: 30, marginVertical: 10
     }} />
         <View style={styles.inner} >
           <Text style={[styles.cardTitle]}>Add Manually</Text>
-          <Text style={[styles.cardSubtitle]}>Take Photos and categorize your outfits yourself (recommended)</Text>
+          <Text style={[styles.cardSubtitle]}>Take photos or Choose from gallery and organize them yourself</Text>
         </View>
       </TouchableOpacity>
         </View>
 
       {/* Skip Option */}
       <TouchableOpacity  onPress={() => { navigation.navigate('tabs') }} style={styles.skipCard} activeOpacity={0.7}>
-        <Image source={require("../../assets/images/skip.png")} style={styles.skipIcon} />
+        {/* <Image source={require("../../assets/images/skip.png")} style={styles.skipIcon} /> */}
         <View style={styles.skipContent}>
-          <Text style={styles.skipTitle}>Skip for Now</Text>
-          <Text style={styles.skipSubtitle}>Skip this step and come back later</Text>
+          <Text style={styles.skipTitle}>Skip setup for now</Text>
+          {/* <Text style={styles.skipSubtitle}>Skip this step and come back later</Text> */}
         </View>
       </TouchableOpacity>
     </SafeAreaView>
@@ -72,7 +84,7 @@ export default permission2
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fafafa",
+    backgroundColor: Colors.cream,
     padding: 25,
   },
 
@@ -90,17 +102,17 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 25,
-    backgroundColor: "#fff",
+    backgroundColor: Colors.surface,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#d36491",
-    shadowOffset: {
-      width: 0,
-      height: 8,
-    },
-    shadowOpacity: 0.15,
-    shadowRadius: 20,
-    elevation: 10,
+    // shadowColor: "#d36491",
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 8,
+    // },
+    // shadowOpacity: 0.15,
+    // shadowRadius: 20,
+    // elevation: 10,
   },
 
   iconText: {
@@ -109,8 +121,8 @@ const styles = StyleSheet.create({
 
   title: {
     fontSize: responsiveFontSize(26),
-    color: "#d36491",
-    marginBottom: 12,
+    color:Colors.brown,
+    marginBottom: 11,
     fontFamily: "Raleway-Bold",
     textAlign: "center",
     lineHeight: responsiveFontSize(32),
@@ -118,11 +130,11 @@ const styles = StyleSheet.create({
 
   subtitle: {
     fontSize: responsiveFontSize(16),
-    color: "#8b5a6b",
+    color: Colors.brown,
     textAlign: "center",
     fontFamily: "Raleway-Regular",
     lineHeight: responsiveFontSize(22),
-    paddingHorizontal: 10,
+    paddingHorizontal: 9,
   },
 
   cardsContainer: {
@@ -180,7 +192,8 @@ const styles = StyleSheet.create({
   },
 surface: { flexDirection: 'row',
    alignItems: 'center', padding: 15, borderRadius: 18,
-    backgroundColor: '#fdf1f3', width: '100%', marginBottom: 25
+    backgroundColor: Colors.surface, width: '100%', marginBottom: 25,
+    borderWidth: 2, borderColor: Colors.peach
 
 },
   cardTitle: {
@@ -188,6 +201,8 @@ surface: { flexDirection: 'row',
     fontFamily: "Raleway-Bold",
     color: "#2c3e50",
     marginBottom: 8,
+    alignSelf: "center",
+    textAlign:"center"
   },
 
   cardSubtitle: {
@@ -196,6 +211,7 @@ surface: { flexDirection: 'row',
     color: "#7f8c8d",
     lineHeight: responsiveFontSize(20),
     marginBottom: 15,
+      textAlign:"center"
   },
 
   featureContainer: {
@@ -242,11 +258,12 @@ surface: { flexDirection: 'row',
     alignItems: "center",
     padding: 20,
     borderRadius: 15,
-    backgroundColor: "#f8f9fa",
-    borderWidth: 1,
-    borderColor: "#e0e0e0ff",
+    // backgroundColor: "#f8f9fa",
+    // borderWidth: 1,
+    // borderColor: "#e0e0e0ff",
     marginTop: 10,
     marginBottom: 50,
+    justifyContent: 'center'
   },
 
   skipIcon: {
@@ -261,14 +278,34 @@ surface: { flexDirection: 'row',
 
   skipTitle: {
     fontSize: responsiveFontSize(16),
-    fontFamily: "Raleway-Bold",
-    color: "#6c757d",
+    fontFamily: "Raleway-Medium",
+    color: Colors.brown,
     marginBottom: 4,
+    textAlign:"center",
+    opacity:0.8
   },
 
   skipSubtitle: {
     fontSize: responsiveFontSize(13),
     fontFamily: "Raleway-Regular",
     color: "#adb5bd",
+  },
+  badge: {
+    position: 'absolute',
+    top: -5,
+    // right: 10,
+    backgroundColor: Colors.cream,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
+    zIndex: 1,
+    borderWidth: 1,
+    borderColor:Colors.peach,
+    color: Colors.peach
+  },
+  badgeText: {
+    fontSize: responsiveFontSize(10),
+    fontFamily: 'Raleway-Bold',
+    color: Colors.peach,
   },
 })

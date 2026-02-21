@@ -12,8 +12,10 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import { Surface } from 'react-native-paper';
+import { shadow, Surface } from 'react-native-paper';
 import { responsiveFontSize } from '../utility/responsive';
+import { Colors } from '../constants/Colors';
+import { shadows } from '../constants/Shadows';
 
 const Onboarding = () => {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
@@ -45,20 +47,20 @@ const Onboarding = () => {
       {
       title: 'Your Wardrobe, Organized',
       description:
-        'Easily build your digital closet, categorize outfits, and keep everything you own right at your fingertips — anytime, anywhere.',
+        "Catalog your clothes digitally and never lose track of your favorite pieces again.",
       image: require('../../assets/images/ward.png'),
     },
     {
       title: 'Get Styled Everyday',
       description:
-        'Receive personalized outfit suggestions tailored to your mood, occasion, or even the weather — so you always step out in style.',
+        'Stuck on what to wear? Let us mix and match outfits for any occasion.',
       image: require('../../assets/images/dress.png'),
     },
   
     {
       title: 'Auto-Detect Your Outfits (coming soon)',
       description:
-        'Let the app magically scan your phone gallery to identify your clothes — no more wasting time on manual uploads.',
+        'AI-powered suggestions that learn your style the more you use the app.',
       image: require('../../assets/images/hanger.png'),
     }
   ];
@@ -88,7 +90,8 @@ const Onboarding = () => {
       </View>
 
       <FlatList
-        style={{ position: 'relative', bottom: '0%', maxHeight: 350, width: '100%', marginBottom: '40%' }}
+        style={{   paddingTop:'80%'}}
+        contentContainerStyle={{ justifyContent:'flex-end',}}
         ref={ref}
         data={slides}
         keyExtractor={(_, index) => index.toString()}
@@ -106,22 +109,115 @@ const Onboarding = () => {
             marginHorizontal: width * 0.1,
             marginTop: 10,
             borderRadius: 20,
-            paddingTop: 40
+            paddingTop: 40,
+            position:"relative",
+            bottom: "0%",
+            overflow: 'visible'
           }}>
-            <Image source={item.image} style={{ width: 50, height: 50, marginBottom: 10 }} />
+            <View style={{
+              position: 'absolute',
+              bottom: '150%',
+              width: 180,
+              height: 180,
+              alignSelf: 'center',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+              <View style={{
+                position: 'absolute',
+                width: 220,
+                height: 220,
+                borderRadius: 110,
+                backgroundColor: Colors.cream,
+                opacity: 0.15,
+              }} />
+              <View style={{
+                position: 'absolute',
+                width: 210,
+                height: 210,
+                borderRadius: 105,
+                backgroundColor: Colors.cream,
+                opacity: 0.18,
+              }} />
+              <View style={{
+                position: 'absolute',
+                width: 200,
+                height: 200,
+                borderRadius: 100,
+                backgroundColor: Colors.cream,
+                opacity: 0.22,
+              }} />
+              <View style={{
+                position: 'absolute',
+                width: 190,
+                height: 190,
+                borderRadius: 95,
+                backgroundColor: Colors.cream,
+                opacity: 0.26,
+              }} />
+              <View style={{
+                position: 'absolute',
+                width: 180,
+                height: 180,
+                borderRadius: 90,
+                backgroundColor: Colors.cream,
+                opacity: 0.3,
+              }} />
+              <View style={{
+                position: 'absolute',
+                width: 170,
+                height: 170,
+                borderRadius: 85,
+                backgroundColor: Colors.cream ,
+                opacity: 0.35,
+              }} />
+              <View style={{
+                position: 'absolute',
+                width: 160,
+                height: 160,
+                borderRadius: 80,
+                backgroundColor: Colors.cream,
+                opacity: 0.4,
+              }} />
+              <View style={{
+                position: 'absolute',
+                width: 150,
+                height: 150,
+                borderRadius: 75,
+                backgroundColor: Colors.cream,
+                opacity: 0.45,
+              }} />
+              <View style={{
+                position: 'absolute',
+                width: 140,
+                height: 140,
+                borderRadius: 70,
+                backgroundColor: Colors.cream,
+                opacity: 0.5,
+              }} />
+              <Image source={item.image} style={{ 
+                width: 100, 
+                height: 100, 
+                borderRadius: 50,
+                zIndex: 10
+              }} />
+            </View>
             <Text style={[styles.title, {
-              color: '#d36491',
+              color: Colors.brown,
               alignSelf: 'center',
               textAlign: 'center',
-              fontFamily: 'Raleway-SemiBold'
+              fontFamily: 'Raleway-SemiBold',
+              fontSize:responsiveFontSize(21)
             }]}>
               {item.title}
             </Text>
             <Text style={[styles.description, {
-              color: '#666',
+              color: Colors.brown,
               alignSelf: 'center',
               textAlign: 'center',
-              fontFamily: 'Raleway-Regular'
+              fontFamily: 'Raleway-Regular',
+              fontSize: responsiveFontSize(14)
+
             }]}>
               {item.description}
             </Text>
@@ -197,7 +293,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start'
   },
   button: {
-    backgroundColor: '#d36491',
+    backgroundColor: Colors.terra,
     width: '80%',
     padding: 15,
     borderRadius: 50,
@@ -225,6 +321,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
   },
   activeDot: {
-    backgroundColor: '#d36491',
+    backgroundColor: Colors.terra,
   },
 });

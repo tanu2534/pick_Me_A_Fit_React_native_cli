@@ -6,12 +6,13 @@ import { Provider } from 'react-redux';
 import { store } from './redux/store/store';
 import AppNavigator from './src/navigation/AppNavigator';
 import RNBootSplash from 'react-native-bootsplash';
+import { Colors } from './src/constants/Colors';
 
 function App() {
   useEffect(() => {
     // Force light theme on app start
     StatusBar.setBarStyle('dark-content', true);
-    StatusBar.setBackgroundColor('#ffffff', true);
+    StatusBar.setBackgroundColor(Colors.cream, true);
 
     // Hide bootsplash after app is ready
     const init = async () => {
@@ -27,7 +28,7 @@ function App() {
     <View style={styles.container}>
       <StatusBar 
         barStyle="dark-content" 
-        backgroundColor="#ffffff" 
+        backgroundColor={Colors.cream}
         translucent={false}
       />
       <Provider store={store}>
